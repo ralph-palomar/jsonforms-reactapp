@@ -22,4 +22,4 @@ RUN cp -r build/* public/webforms/survey/
 
 RUN rm -r build
 
-CMD serve -s public/webforms/survey -p 8080
+CMD serve -p 8080
