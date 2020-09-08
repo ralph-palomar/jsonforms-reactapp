@@ -2,7 +2,7 @@
   "name": "my-jsonforms-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "./public/webforms/survey",
+  "homepage": "/public/webforms/survey",
   "dependencies": {
     "@jsonforms/core": "^2.4.0",
     "@jsonforms/examples": "^2.4.0",
