@@ -18,4 +18,4 @@ RUN npm install serve -g
 
 RUN public public/webforms public/webforms/survey 
 
-COPY build public/webforms/survey
+COPY build/. public/webforms/survey/
