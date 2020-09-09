@@ -8,6 +8,7 @@ import {
 import { JsonForms } from '@jsonforms/react';
 import { Button } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
+import { postData } from './api';
 
 function App() {
   const [errorMessage, setErrorMessage] = React.useState<string>();
@@ -44,8 +45,8 @@ function App() {
 
 function save(errorMsg: any, payload: any) {
   if (errorMsg === "") {
-    console.log("Processing...")
-    console.log(payload);
+    postData(process.env.REACT_APP_PERSISTENCE_COLLECTION, payload)
+      .then((response) => console.log("Success"))
   }
 }
 
