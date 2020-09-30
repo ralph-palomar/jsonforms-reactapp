@@ -16,9 +16,9 @@ RUN npm run build
 
 RUN npm install serve -g
 
-RUN mkdir public/webforms public/webforms/survey 
+RUN mkdir public/app public/app/webformbuilder 
 
-RUN cp -r build/* public/webforms/survey/
+RUN cp -r build/* public/app/webformbuilder/
 
 RUN rm -r build
 
