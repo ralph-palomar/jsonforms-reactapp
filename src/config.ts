@@ -25,7 +25,7 @@ export const schema = {
           },
           type: {
             type: 'string',
-            enum: ['string', 'number', 'integer', 'boolean']
+            enum: ['string', 'date', 'number', 'integer', 'boolean']
           },
           mandatory: {
             type: 'boolean'

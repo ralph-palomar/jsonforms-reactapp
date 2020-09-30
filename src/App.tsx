@@ -37,9 +37,9 @@ function App() {
             var uiElements: any = [];
             fields?.map((item) => {
               Object.assign(properties, {
-                [item.name]: Object.assign({
-                  type: item.type
-                }, item.enumerations != null && item.enumerations?.length !== 0 ? { enum: item.enumerations } : {})
+                [item.name]: Object.assign(
+                  item.type === 'date' ? { type: 'string', format: 'date' } : { type: item.type }
+                , item.enumerations != null && item.enumerations?.length !== 0 ? { enum: item.enumerations } : {})
               });
               if (item.mandatory) {
                 required.push(item.name);
