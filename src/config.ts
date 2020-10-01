@@ -47,22 +47,22 @@ export const schema = {
     }
   }
   export const uischema = {
-    type: "VerticalLayout",
+    type: 'VerticalLayout',
     elements: [
       {
-        type: "Control",
-        scope: "#/properties/title",
-        label: "Enter title"
+        type: 'Control',
+        scope: '#/properties/title',
+        label: 'Enter title'
       },
       {
-        type: "Control",
-        scope: "#/properties/layout",
-        label: "Choose layout"
+        type: 'Control',
+        scope: '#/properties/layout',
+        label: 'Choose layout'
       },
       {
-        type: "Control",
-        scope: "#/properties/fields",
-        label: "Add form fields"
+        type: 'Control',
+        scope: '#/properties/fields',
+        label: 'Add form fields'
       }
     ]
   }

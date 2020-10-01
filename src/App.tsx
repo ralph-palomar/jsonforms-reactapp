@@ -5,8 +5,8 @@ import {
   materialRenderers,
   materialCells
 } from '@jsonforms/material-renderers';
-import { JsonForms } from '@jsonforms/react';
 import { Button } from '@material-ui/core';
+import { JsonForms } from '@jsonforms/react';
 import { postData } from './api';
 import { UISchemaElement } from '@jsonforms/core';
 
@@ -71,35 +71,39 @@ function App() {
             }
             setJsonSchema(jsonSchema);
             setUiSchema(uiSchema);
+            setJsonPayload(data);
           }
         }}
       />
       <br/><br/>
-      {/* <Alert severity="error">{errorMessage}</Alert> */}
       <JsonForms
         schema={generatedJsonSchema}
         uischema={generatedUISchema}
         data={defaultData}
         renderers={materialRenderers}
         cells={materialCells}
-        onChange={({ errors, data }) => { 
-          setJsonPayload(data);
-        }}
       />
       <br/><br/>
       <Button variant="contained" color="primary" onClick={(e) => save(errorMessage, jsonPayload, generatedJsonSchema, generatedUISchema)}>
          SAVE
       </Button>
-      <br/><br/><br/><br/>
+      <br/><br/>
     </div>
   );
 }
 
 function save(errorMsg: any, payload: any, jsonSchema: any, uiSchema: any) {
   if (errorMsg === "") {
-    // postData(process.env.REACT_APP_PERSISTENCE_COLLECTION, payload)
-    //   .then((response) => console.log("Success"))
-    //
+    const webFormData = {
+      webFormMeta: payload,
+      jsonSchema: jsonSchema,
+      uiSchema: uiSchema
+    }
+    postData('WEB_FORMS', webFormData)
+      .then((response) => {
+        
+      })
+    
   }
 }
 
