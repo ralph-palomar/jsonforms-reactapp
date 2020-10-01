@@ -1,4 +1,4 @@
-export const schema = {
+export const wfb_schema = {
     type: 'object',
     properties: {
       title: {
@@ -46,7 +46,7 @@ export const schema = {
       }
     }
   }
-  export const uischema = {
+  export const wfb_uischema = {
     type: 'VerticalLayout',
     elements: [
       {
