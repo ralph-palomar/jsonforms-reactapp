@@ -1,6 +1,10 @@
 export const schema = {
     type: 'object',
     properties: {
+      title: {
+        type: 'string',
+        maxLength: 25
+      },
       layout: {
         type: 'string',
         enum: ['VerticalLayout', 'HorizontalLayout']
@@ -12,20 +16,21 @@ export const schema = {
         }
       }
     },
-    required: ['layout', 'fields'],
+    required: ['title','layout', 'fields'],
     definitions: {
       fields: {
         type: 'object',
         properties: {
           name: {
-            type: 'string'
+            type: 'string',
+            pattern: '^[^\\s]+[\\w][^\\s]+$'
           },
           description: {
             type: 'string'
           },
           type: {
             type: 'string',
-            enum: ['string', 'date', 'number', 'integer', 'boolean']
+            enum: ['string', 'date', 'date-time', 'time', 'number', 'integer', 'boolean', 'array']
           },
           mandatory: {
             type: 'boolean'
@@ -44,6 +49,11 @@ export const schema = {
   export const uischema = {
     type: "VerticalLayout",
     elements: [
+      {
+        type: "Control",
+        scope: "#/properties/title",
+        label: "Enter title"
+      },
       {
         type: "Control",
         scope: "#/properties/layout",
