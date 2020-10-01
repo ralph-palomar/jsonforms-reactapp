@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './App.css';
-import { wfb_schema, wfb_uischema } from './config';
+import { vf_schema, wfb_schema, wfb_uischema } from './config';
 import { 
   materialRenderers,
   materialCells
 } from '@jsonforms/material-renderers';
 import { Button, Snackbar, Menu, MenuItem } from '@material-ui/core';
 import { JsonForms } from '@jsonforms/react';
-import { postData } from './api';
+import { postData, getAllData } from './api';
 import { UISchemaElement } from '@jsonforms/core';
 
 function App() {
@@ -23,6 +23,7 @@ function App() {
     <div className="App">
       <MenuInApp/>
       <br/><br/>
+      <h2>Form Designer</h2>
       <JsonForms
         schema={wfb_schema}
         uischema={wfb_uischema}
@@ -127,12 +128,15 @@ function MenuInApp() {
 
   const handleClickViewForms = () => {
     setAnchorEl(null);
-    ReactDOM.render(
-      <React.StrictMode>
-        <ViewForms />
-      </React.StrictMode>,
-      document.getElementById('root')
-    );
+    getAllData(process.env.REACT_APP_PERSISTENCE_COLLECTION)
+    .then((response) => {
+      ReactDOM.render(
+        <React.StrictMode>
+          <ListForms data={response.data} />
+        </React.StrictMode>,
+        document.getElementById('root')
+      );
+    })
   }
 
   return (
@@ -146,18 +150,75 @@ function MenuInApp() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClickVisualEditor}>Visual Editor</MenuItem>
-        <MenuItem onClick={handleClickViewForms}>View My Forms</MenuItem>
+        <MenuItem onClick={handleClickVisualEditor}>Form Designer</MenuItem>
+        <MenuItem onClick={handleClickViewForms}>List all Web Forms</MenuItem>
       </Menu>
     </div>
   );
 
 }
 
-function ViewForms() {
+function ListForms(props: any) {
+  const [webformsData] = React.useState(props.data);
+
+  const summaryData = webformsData.map((item: any) => {
+    return {
+      formId: item._id,
+      title: item.webFormMeta.title,
+      view: false
+    }
+  });
+
   return (
     <div className="App">
       <MenuInApp/>
+      <br/><br/>
+      <h2>List of Web Forms</h2>
+      <JsonForms
+        schema={vf_schema}
+        data={summaryData}
+        renderers={materialRenderers}
+        cells={materialCells}
+        onChange={({ errors, data }) => {
+          const filterDataByView = data?.filter((item: any) => {
+            return item.view
+          })
+          const formId = filterDataByView[0]?.formId
+          if (formId != null) {
+            const filterDataById = webformsData?.filter((item: any) => {
+              return item._id === formId
+            })
+            if (filterDataById != null) {
+              ReactDOM.render(
+                <React.StrictMode>
+                  <ViewForm data={filterDataById[0]} />
+                </React.StrictMode>,
+                document.getElementById('root')
+              );
+            }
+          }
+        }}
+      />
+    </div>
+  )
+}
+
+
+function ViewForm(props: any) {
+  const [webformsData] = React.useState(props.data);
+
+  return (
+    <div className="App">
+      <MenuInApp/>
+      <br/><br/>
+      <h2>{webformsData.webFormMeta.title}</h2>
+      <JsonForms
+        schema={webformsData.jsonSchema}
+        uischema={webformsData.uiSchema}
+        data={{}}
+        renderers={materialRenderers}
+        cells={materialCells}
+      />
     </div>
   )
 }
@@ -169,7 +230,7 @@ function save(errorMsg: any, payload: any, jsonSchema: any, uiSchema: any, setOp
       jsonSchema: jsonSchema,
       uiSchema: uiSchema
     }
-    postData('WEB_FORMS', webFormData)
+    postData(process.env.REACT_APP_PERSISTENCE_COLLECTION, webFormData)
       .then((response) => {
         setOpen(true);
         clearForm(setJsonSchema, setUISchema, setDefaultData);

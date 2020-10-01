@@ -66,3 +66,25 @@ export const wfb_schema = {
       }
     ]
   }
+  export const vf_schema = {
+    type: 'array',
+    items: {
+      $ref: '#/definitions/record'
+    },
+    definitions: {
+      record: {
+        type: 'object',
+        properties: {
+          formId: {
+            type: 'string'
+          },
+          title: {
+            type: 'string'
+          },
+          view: {
+            type: 'boolean'
+          }
+        }
+      }
+    }
+  }
